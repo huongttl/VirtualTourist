@@ -72,7 +72,7 @@
                                         </constraints>
                                     </mapView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="YMr-9V-iMe">
-                                        <rect key="frame" x="0.0" y="204" width="414" height="614"/>
+                                        <rect key="frame" x="0.0" y="204" width="414" height="564"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="naP-h3-chu">
                                             <size key="itemSize" width="50" height="50"/>
@@ -91,11 +91,18 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RhJ-rD-sMD">
+                                        <rect key="frame" x="0.0" y="768" width="414" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Nm4-Zd-85I"/>
+                                        </constraints>
+                                        <state key="normal" title="NEW COLLECTION"/>
+                                    </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="RhJ-rD-sMD" secondAttribute="bottom" id="1DN-Oe-4JT"/>
                                     <constraint firstAttribute="trailing" secondItem="YMr-9V-iMe" secondAttribute="trailing" id="FNC-0U-hFv"/>
                                     <constraint firstItem="EhO-S9-FsK" firstAttribute="top" secondItem="bzh-jS-wcq" secondAttribute="top" id="GB3-cU-6DE"/>
-                                    <constraint firstAttribute="bottom" secondItem="YMr-9V-iMe" secondAttribute="bottom" id="Icc-cW-inm"/>
                                     <constraint firstItem="EhO-S9-FsK" firstAttribute="leading" secondItem="bzh-jS-wcq" secondAttribute="leading" id="MZR-NN-5mN"/>
                                     <constraint firstItem="YMr-9V-iMe" firstAttribute="top" secondItem="EhO-S9-FsK" secondAttribute="bottom" id="S3e-fp-4Wn"/>
                                     <constraint firstItem="YMr-9V-iMe" firstAttribute="leading" secondItem="bzh-jS-wcq" secondAttribute="leading" id="ZEd-Tq-Adk"/>
