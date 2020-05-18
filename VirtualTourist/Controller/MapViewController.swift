@@ -33,20 +33,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
         }
-//        if gestureRecognizer.state == .ended {
-//
-//        }
-    }
-
-    @IBAction func move(_ sender: Any) {
-    let nextVC = storyboard?.instantiateViewController(identifier: "CollectionViewController") as! CollectionViewController
-    navigationController?.pushViewController(nextVC, animated: true)
-
-    }
-    
-    @IBAction func nextView(_ sender: Any) {
-        let nextVC = storyboard?.instantiateViewController(identifier: "CollectionViewController") as! CollectionViewController
-        navigationController?.pushViewController(nextVC, animated: true)
     }
 }
 
@@ -64,5 +50,9 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print("pin selected")
+        print("\(view.annotation?.coordinate.latitude); \(view.annotation?.coordinate.longitude)")
+        let collectionVC = storyboard?.instantiateViewController(identifier: "CollectionViewController") as! CollectionViewController
+        collectionVC.pinAnnotation = view.annotation
+        navigationController?.pushViewController(collectionVC, animated: true)
     }
 }
