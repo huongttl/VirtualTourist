@@ -73,7 +73,8 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) //tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell")!
+//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) //tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell")!
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
         let photo = DataModel.photos[indexPath.row]
         FlickrClient.downloadPhoto(farmId: photo.farm, serverId: photo.server, id: photo.id, secret: photo.secret) {
             data, error in
@@ -81,7 +82,7 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
                 return
             }
             let image = UIImage(data: data)
-            cell.contentView.largeContentImage = image
+            cell.imageView.image = image
             print("image run")
         }
 //        let studentLocation = DataModel.studentLocations[indexPath.row]

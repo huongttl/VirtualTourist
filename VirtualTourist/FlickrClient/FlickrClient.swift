@@ -19,7 +19,7 @@ class FlickrClient {
         var stringValue: String {
             switch self {
             case .getPhotoURLs(let lat, let lon):
-                return Endpoints.base + "?method=flickr.photos.search&api_key=\(FlickrClient.apiKey)&lat=\(lat)&lon=\(lon)&per_page=10&format=json&nojsoncallback=1"
+                return Endpoints.base + "?method=flickr.photos.search&api_key=\(FlickrClient.apiKey)&lat=\(lat)&lon=\(lon)&per_page=50&format=json&nojsoncallback=1"
             case .photoURL(let farmId, let serverId, let id, let secret):
                 return "https://farm\(farmId).staticflickr.com/\(serverId)/\(id)_\(secret).jpg"
             }
