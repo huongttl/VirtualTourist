@@ -90,6 +90,9 @@
                                                 </collectionViewCellContentView>
                                             </collectionViewCell>
                                         </cells>
+                                        <connections>
+                                            <outlet property="dataSource" destination="dvy-rf-l9s" id="wMw-7z-xsb"/>
+                                        </connections>
                                     </collectionView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RhJ-rD-sMD">
                                         <rect key="frame" x="0.0" y="768" width="414" height="50"/>
@@ -121,6 +124,7 @@
                         <viewLayoutGuide key="safeArea" id="8L8-ba-kvV"/>
                     </view>
                     <connections>
+                        <outlet property="collectionView" destination="YMr-9V-iMe" id="VRH-hs-gPQ"/>
                         <outlet property="mapView" destination="EhO-S9-FsK" id="nT0-wA-PQv"/>
                     </connections>
                 </viewController>

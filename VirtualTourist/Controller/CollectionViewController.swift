@@ -12,6 +12,7 @@ import MapKit
 class CollectionViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     var pinAnnotation: MKAnnotation!
     
@@ -23,19 +24,29 @@ class CollectionViewController: UIViewController {
         mapView.addAnnotation(pinAnnotation)
         let centerLocation = CLLocationCoordinate2D(latitude: pinAnnotation.coordinate.latitude, longitude: pinAnnotation.coordinate.longitude)
         mapView.setCenter(centerLocation, animated: true)
+        
+        collectionView.delegate = self
+        
+        _ = FlickrClient.getPhotoURLs(lat: pinAnnotation.coordinate.latitude, lon: pinAnnotation.coordinate.longitude) {
+            (response, error) in
+            if error != nil {
+                self.showLoadFailure(message: error?.localizedDescription ?? "")
+            } else {
+                DataModel.photos = (response?.photos.photo)!
+                print("count student \(DataModel.photos.count)")
+                self.collectionView.reloadData()
+                //                self.viewAnnotation()
+            }
+            
+        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func showLoadFailure(message: String) {
+        let alertVC = UIAlertController(title: "Load Student Location Failed", message: message, preferredStyle: .alert)
+        print(message)
+        alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertVC, animated: true, completion: nil)
     }
-    */
-
 }
 
 extension CollectionViewController: MKMapViewDelegate {
@@ -49,4 +60,38 @@ extension CollectionViewController: MKMapViewDelegate {
         print("latitude: \(annotation.coordinate.latitude), longitude: \(annotation.coordinate.longitude)")
         return pinView
     }
+}
+
+extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("Collection item num: \(DataModel.photos.count)")
+        return DataModel.photos.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) //tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell")!
+        let photo = DataModel.photos[indexPath.row]
+        FlickrClient.downloadPhoto(farmId: photo.farm, serverId: photo.server, id: photo.id, secret: photo.secret) {
+            data, error in
+            guard let data = data else {
+                return
+            }
+            let image = UIImage(data: data)
+            cell.contentView.largeContentImage = image
+            print("image run")
+        }
+//        let studentLocation = DataModel.studentLocations[indexPath.row]
+        
+//        cell.textLabel?.text = studentLocation.firstName + " " + studentLocation.lastName
+//        cell.imageView?.image = F
+//        cell.detailTextLabel?.text = studentLocation.mediaURL
+        
+        return cell
+    }
+    
+    // Todo
 }
