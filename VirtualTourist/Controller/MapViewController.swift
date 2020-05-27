@@ -22,7 +22,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         gestureRecognizer.delegate = self
         mapView.addGestureRecognizer(gestureRecognizer)
         
-//        checkMapSetting()
+        checkMapSetting()
         
     }
     
@@ -44,11 +44,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func checkMapSetting() {
-        print("aha")
-        print(UserDefaults.standard.object(forKey: "CenterPosLat"))
         if UserDefaults.standard.object(forKey: "CenterPosLat") != nil {
-            mapView.setCenter(CLLocationCoordinate2D(latitude: UserDefaults.standard.double(forKey: "CenterPosLat"), longitude: UserDefaults.standard.double(forKey: "CenterPosLon")), animated: true)
-            mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: UserDefaults.standard.double(forKey: "ZoomRange")) , animated: true)
             let center = CLLocationCoordinate2D(latitude: UserDefaults.standard.double(forKey: "CenterPosLat"), longitude: UserDefaults.standard.double(forKey: "CenterPosLon"))
             let zoom = MKCoordinateSpan(latitudeDelta: UserDefaults.standard.double(forKey: "ZoomRangeLat"), longitudeDelta: UserDefaults.standard.double(forKey: "ZoomRangeLon"))
             mapView.setRegion(MKCoordinateRegion(center: center, span: zoom), animated: true)
@@ -61,11 +57,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         UserDefaults.standard.set(zoomRange.latitudeDelta, forKey: "ZoomRangeLat")
         UserDefaults.standard.set(zoomRange.longitudeDelta, forKey: "ZoomRangeLon")
         UserDefaults.standard.synchronize()
-        print("saved")
-//        print(UserDefaults.standard.double(forKey: "CenterPosLat"))
-//        print(UserDefaults.standard.double(forKey: "CenterPosLon"))
-//        print(UserDefaults.standard.double(forKey: "ZoomRangeLat"))
-//        print(UserDefaults.standard.double(forKey: "ZoomRangeLon"))
     }
 }
 
