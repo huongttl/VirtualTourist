@@ -13,13 +13,13 @@ class FlickrClient {
     enum Endpoints {
         static let base = "https://www.flickr.com/services/rest/"
         
-        case getPhotoURLs(Double, Double)
+        case getPhotoURLs(Double, Double, Int)
         case photoURL(Int, String, String, String)
         
         var stringValue: String {
             switch self {
-            case .getPhotoURLs(let lat, let lon):
-                return Endpoints.base + "?method=flickr.photos.search&api_key=\(FlickrClient.apiKey)&lat=\(lat)&lon=\(lon)&per_page=50&format=json&nojsoncallback=1"
+            case .getPhotoURLs(let lat, let lon, let page):
+                return Endpoints.base + "?method=flickr.photos.search&api_key=\(FlickrClient.apiKey)&lat=\(lat)&lon=\(lon)&per_page=50&page=\(page)&format=json&nojsoncallback=1"
             case .photoURL(let farmId, let serverId, let id, let secret):
                 return "https://farm\(farmId).staticflickr.com/\(serverId)/\(id)_\(secret).jpg"
             }
@@ -75,7 +75,8 @@ class FlickrClient {
     }
     
     class func getPhotoURLs(lat: Double, lon: Double, completion: @escaping (FlickrSearch?, Error?) -> Void) {
-        taskForGETRequest(url: Endpoints.getPhotoURLs(lat, lon).url, response: FlickrSearch.self) {
+        let randomPage = Int.random(in: 1..<10)
+        taskForGETRequest(url: Endpoints.getPhotoURLs(lat, lon, randomPage).url, response: FlickrSearch.self) {
             (response, error) in
             if let response = response {
                 completion(response, nil)

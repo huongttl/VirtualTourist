@@ -114,6 +114,9 @@
                                             <constraint firstAttribute="height" constant="50" id="Nm4-Zd-85I"/>
                                         </constraints>
                                         <state key="normal" title="NEW COLLECTION"/>
+                                        <connections>
+                                            <action selector="newCollectionButtonTapped:" destination="dvy-rf-l9s" eventType="touchUpInside" id="DMj-3c-aXo"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -140,6 +143,7 @@
                     <connections>
                         <outlet property="collectionView" destination="YMr-9V-iMe" id="VRH-hs-gPQ"/>
                         <outlet property="mapView" destination="EhO-S9-FsK" id="nT0-wA-PQv"/>
+                        <outlet property="newCollectionButton" destination="RhJ-rD-sMD" id="Nxq-lT-ZFF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7E5-AV-DTr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

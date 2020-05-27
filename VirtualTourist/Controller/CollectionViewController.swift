@@ -11,6 +11,7 @@ import MapKit
 
 class CollectionViewController: UIViewController {
 
+    @IBOutlet weak var newCollectionButton: UIButton!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -35,12 +36,24 @@ class CollectionViewController: UIViewController {
                 DataModel.photos = (response?.photos.photo)!
                 print("count student \(DataModel.photos.count)")
                 self.collectionView.reloadData()
-                //                self.viewAnnotation()
             }
             
         }
     }
     
+    @IBAction func newCollectionButtonTapped(_ sender: Any) {
+        _ = FlickrClient.getPhotoURLs(lat: pinAnnotation.coordinate.latitude, lon: pinAnnotation.coordinate.longitude) {
+            (response, error) in
+            if error != nil {
+                self.showLoadFailure(message: error?.localizedDescription ?? "")
+            } else {
+                DataModel.photos = (response?.photos.photo)!
+                print("count student \(DataModel.photos.count)")
+                self.collectionView.reloadData()
+            }
+            
+        }
+    }
     func showLoadFailure(message: String) {
         let alertVC = UIAlertController(title: "Load Student Location Failed", message: message, preferredStyle: .alert)
         print(message)

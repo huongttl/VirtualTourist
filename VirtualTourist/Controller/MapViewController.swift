@@ -22,7 +22,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         gestureRecognizer.delegate = self
         mapView.addGestureRecognizer(gestureRecognizer)
         
-        checkMapSetting()
+//        checkMapSetting()
         
     }
     
