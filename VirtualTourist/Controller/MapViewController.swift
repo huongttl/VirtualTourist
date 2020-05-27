@@ -10,7 +10,8 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController, UIGestureRecognizerDelegate {
-    
+    var centerPos = CLLocationCoordinate2D()
+    var zoomRange = MKCoordinateSpan()
     @IBOutlet weak var mapView: MKMapView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,13 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         gestureRecognizer.delegate = self
         mapView.addGestureRecognizer(gestureRecognizer)
         
+        checkMapSetting()
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveMapSetting()
     }
     
     @objc func handleTap(gestureRecognizer: UILongPressGestureRecognizer) {
@@ -33,6 +41,31 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
         }
+    }
+    
+    func checkMapSetting() {
+        print("aha")
+        print(UserDefaults.standard.object(forKey: "CenterPosLat"))
+        if UserDefaults.standard.object(forKey: "CenterPosLat") != nil {
+            mapView.setCenter(CLLocationCoordinate2D(latitude: UserDefaults.standard.double(forKey: "CenterPosLat"), longitude: UserDefaults.standard.double(forKey: "CenterPosLon")), animated: true)
+            mapView.setCameraZoomRange(MKMapView.CameraZoomRange(maxCenterCoordinateDistance: UserDefaults.standard.double(forKey: "ZoomRange")) , animated: true)
+            let center = CLLocationCoordinate2D(latitude: UserDefaults.standard.double(forKey: "CenterPosLat"), longitude: UserDefaults.standard.double(forKey: "CenterPosLon"))
+            let zoom = MKCoordinateSpan(latitudeDelta: UserDefaults.standard.double(forKey: "ZoomRangeLat"), longitudeDelta: UserDefaults.standard.double(forKey: "ZoomRangeLon"))
+            mapView.setRegion(MKCoordinateRegion(center: center, span: zoom), animated: true)
+        }
+    }
+    
+    func saveMapSetting() {
+        UserDefaults.standard.set(centerPos.latitude, forKey: "CenterPosLat")
+        UserDefaults.standard.set(centerPos.longitude, forKey: "CenterPosLon")
+        UserDefaults.standard.set(zoomRange.latitudeDelta, forKey: "ZoomRangeLat")
+        UserDefaults.standard.set(zoomRange.longitudeDelta, forKey: "ZoomRangeLon")
+        UserDefaults.standard.synchronize()
+        print("saved")
+//        print(UserDefaults.standard.double(forKey: "CenterPosLat"))
+//        print(UserDefaults.standard.double(forKey: "CenterPosLon"))
+//        print(UserDefaults.standard.double(forKey: "ZoomRangeLat"))
+//        print(UserDefaults.standard.double(forKey: "ZoomRangeLon"))
     }
 }
 
@@ -54,5 +87,13 @@ extension MapViewController: MKMapViewDelegate {
         let collectionVC = storyboard?.instantiateViewController(identifier: "CollectionViewController") as! CollectionViewController
         collectionVC.pinAnnotation = view.annotation
         navigationController?.pushViewController(collectionVC, animated: true)
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        centerPos = mapView.centerCoordinate
+        zoomRange = mapView.region.span
+        print("centerPos: \(centerPos)")
+        print("rangeZoom: \(zoomRange)")
+        
     }
 }

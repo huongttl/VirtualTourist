@@ -8,11 +8,25 @@
 
 import UIKit
 import CoreData
+//import MapKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    //Check for UserDefaults
+//    func checkIfFirstLaunch() {
+//        if UserDefaults.standard.bool(forKey: "HasLaunchedBefore") {
+//            print("App has launched before")
+//        } else {
+//            print("First time launch")
+//            UserDefaults.standard.set(true, forKey: "HasLaunchedBefore")
+//            UserDefaults.standard.set(0.0, forKey: "CenterLat")
+//            UserDefaults.standard.set(0.0, forKey: "CenterLon")
+//            UserDefaults.standard.set(CLLocationCoordinate2D(latitude: 0, longitude: 0), forKey: "CenterPos")
+//            UserDefaults.standard.set(0, forKey: "ZoomRange")
+//            UserDefaults.standard.synchronize()
+//        }
+//    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

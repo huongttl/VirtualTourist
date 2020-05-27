@@ -73,7 +73,6 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) //tableView.dequeueReusableCell(withIdentifier: "StudentLocationTableViewCell")!
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
         let photo = DataModel.photos[indexPath.row]
         FlickrClient.downloadPhoto(farmId: photo.farm, serverId: photo.server, id: photo.id, secret: photo.secret) {
@@ -83,13 +82,7 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
             }
             let image = UIImage(data: data)
             cell.imageView.image = image
-            print("image run")
         }
-//        let studentLocation = DataModel.studentLocations[indexPath.row]
-        
-//        cell.textLabel?.text = studentLocation.firstName + " " + studentLocation.lastName
-//        cell.imageView?.image = F
-//        cell.detailTextLabel?.text = studentLocation.mediaURL
         
         return cell
     }
