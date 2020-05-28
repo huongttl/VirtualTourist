@@ -28,6 +28,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         mapView.addGestureRecognizer(gestureRecognizer)
         
         checkMapSetting()
+        setUpFetchedResultsController()
         setUpPins()
         
     }
@@ -89,7 +90,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     func setUpFetchedResultsController() {
         let fetchRequest: NSFetchRequest<PinData> = PinData.fetchRequest()
 //        let sortDesriptor = NSSortDescriptor(key: "creationDate", ascending: false)
-//        fetchRequest.sortDescriptors = [sortDesriptor]
+        fetchRequest.sortDescriptors = []
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         do {
