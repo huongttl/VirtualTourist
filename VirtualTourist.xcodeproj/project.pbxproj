@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34003A7B247F6852000F7F0A /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34003A7A247F6852000F7F0A /* DataController.swift */; };
 		3418D5D3246FF2650043461E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3418D5D2246FF2650043461E /* AppDelegate.swift */; };
 		3418D5D5246FF2650043461E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3418D5D4246FF2650043461E /* SceneDelegate.swift */; };
 		3418D5D7246FF2650043461E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3418D5D6246FF2650043461E /* MapViewController.swift */; };
@@ -18,9 +19,11 @@
 		3418D5F2247AA8AA0043461E /* FlickrSearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3418D5F1247AA8AA0043461E /* FlickrSearchResponse.swift */; };
 		349AD7EC247AC79C007DE500 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349AD7EB247AC79C007DE500 /* DataModel.swift */; };
 		349AD7EE247C2E7B007DE500 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 349AD7ED247C2E7B007DE500 /* CollectionViewCell.swift */; };
+		34CCCFC6247EDB1200182F3A /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 34CCCFC4247EDB1200182F3A /* VirtualTourist.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		34003A7A247F6852000F7F0A /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		3418D5CF246FF2650043461E /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3418D5D2246FF2650043461E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3418D5D4246FF2650043461E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +37,7 @@
 		3418D5F1247AA8AA0043461E /* FlickrSearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrSearchResponse.swift; sourceTree = "<group>"; };
 		349AD7EB247AC79C007DE500 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 		349AD7ED247C2E7B007DE500 /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		34CCCFC5247EDB1200182F3A /* VirtualTourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VirtualTourist.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +77,7 @@
 				3418D5EA246FF53E0043461E /* Controller */,
 				3418D5EE247AA60E0043461E /* FlickrClient */,
 				3418D5F3247ABCFE0043461E /* FlickrResponse */,
-				3426F93E247ECFCD00B47730 /* New Group */,
+				3426F93E247ECFCD00B47730 /* CoreData */,
 				3418D5ED246FF5AE0043461E /* Assets */,
 			);
 			path = VirtualTourist;
@@ -115,11 +119,13 @@
 			path = FlickrResponse;
 			sourceTree = "<group>";
 		};
-		3426F93E247ECFCD00B47730 /* New Group */ = {
+		3426F93E247ECFCD00B47730 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				34CCCFC4247EDB1200182F3A /* VirtualTourist.xcdatamodeld */,
+				34003A7A247F6852000F7F0A /* DataController.swift */,
 			);
-			path = "New Group";
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		349AD7EA247AC789007DE500 /* Data */ = {
@@ -203,8 +209,10 @@
 			files = (
 				3418D5F2247AA8AA0043461E /* FlickrSearchResponse.swift in Sources */,
 				349AD7EE247C2E7B007DE500 /* CollectionViewCell.swift in Sources */,
+				34CCCFC6247EDB1200182F3A /* VirtualTourist.xcdatamodeld in Sources */,
 				3418D5D7246FF2650043461E /* MapViewController.swift in Sources */,
 				3418D5D3246FF2650043461E /* AppDelegate.swift in Sources */,
+				34003A7B247F6852000F7F0A /* DataController.swift in Sources */,
 				3418D5D5246FF2650043461E /* SceneDelegate.swift in Sources */,
 				349AD7EC247AC79C007DE500 /* DataModel.swift in Sources */,
 				3418D5EC246FF5860043461E /* CollectionViewController.swift in Sources */,
@@ -406,6 +414,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		34CCCFC4247EDB1200182F3A /* VirtualTourist.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				34CCCFC5247EDB1200182F3A /* VirtualTourist.xcdatamodel */,
+			);
+			currentVersion = 34CCCFC5247EDB1200182F3A /* VirtualTourist.xcdatamodel */;
+			path = VirtualTourist.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3418D5C7246FF2650043461E /* Project object */;
 }
