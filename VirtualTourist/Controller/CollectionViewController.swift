@@ -15,6 +15,7 @@ class CollectionViewController: UIViewController {
     @IBOutlet weak var newCollectionButton: UIButton!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     var pinAnnotation: MKAnnotation!
     var pin: PinData!
@@ -22,6 +23,9 @@ class CollectionViewController: UIViewController {
     var fetchedResultsController: NSFetchedResultsController<PhotoData>!
     var photos: [PhotoData] = [PhotoData]()
     var isPhotoStored = false
+    
+    let sectionInsets = UIEdgeInsets(top: 5.0, left: 20.0, bottom: 5.0, right: 20.0)
+    let itemsPerRow: CGFloat = 3.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +56,24 @@ class CollectionViewController: UIViewController {
 //            print("set up PHOTOS")
 ////            setUpPhotos()
 //        }
+//        updateFlowLayout(view.frame.size)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
+    }
+    
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//        self.collectionView.collectionViewLayout.invalidateLayout()
+//    }
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        super.viewWillTransition(to: size, with: coordinator)
+//        coordinator.animate(alongsideTransition: {(context)in
+//            self.collectionView.collectionViewLayout.invalidateLayout()
+//        }, completion: nil)
+//    }
     
     func addPhotos() {
         for photo in photos {
@@ -78,7 +99,10 @@ class CollectionViewController: UIViewController {
             } else {
                 DataModel.photos = (response?.photos.photo)!
                 print("count photo \(DataModel.photos.count)")
+//                self.collectionView.reloadData()
                 self.collectionView.reloadData()
+                self.collectionView.reloadInputViews()
+                
             }
             
         }
@@ -134,6 +158,21 @@ class CollectionViewController: UIViewController {
         alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alertVC, animated: true, completion: nil)
     }
+    
+//    func updateFlowLayout(_ withSize: CGSize) {
+//
+//        let landscape = withSize.width > withSize.height
+//
+//        let space: CGFloat = landscape ? 5 : 3
+//        let items: CGFloat = landscape ? 2 : 3
+//
+//        let dimension = (withSize.width - ((items + 1) * space)) / items
+//
+//        flowLayout?.minimumInteritemSpacing = space
+//        flowLayout?.minimumLineSpacing = space
+//        flowLayout?.itemSize = CGSize(width: dimension, height: dimension)
+//        flowLayout?.sectionInset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
+//    }
 }
 
 extension CollectionViewController: MKMapViewDelegate {
@@ -220,3 +259,20 @@ extension CollectionViewController: NSFetchedResultsControllerDelegate {
         }
 
 }
+extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding = sectionInsets.left * (itemsPerRow + 1)
+        let cellWidth = (view.frame.width - padding) / itemsPerRow
+        print("width: \(cellWidth)")
+        return CGSize(width: cellWidth, height: cellWidth)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInsets.left
+    }
+//    func collectionView
+    
+}
+
