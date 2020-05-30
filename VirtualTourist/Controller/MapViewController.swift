@@ -129,6 +129,7 @@ extension MapViewController: MKMapViewDelegate {
         collectionVC.pin = pin
 //        collectionVC.pin = view.annotation
 //        fetchedResultsController.indexPath(forObject: view)
+        mapView.deselectAnnotation(view.annotation, animated: true)
         navigationController?.pushViewController(collectionVC, animated: true)
     }
     

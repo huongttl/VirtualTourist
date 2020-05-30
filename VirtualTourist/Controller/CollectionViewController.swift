@@ -64,17 +64,6 @@ class CollectionViewController: UIViewController {
         collectionView.reloadData()
     }
     
-//    override func viewWillLayoutSubviews() {
-//        super.viewWillLayoutSubviews()
-//        self.collectionView.collectionViewLayout.invalidateLayout()
-//    }
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        super.viewWillTransition(to: size, with: coordinator)
-//        coordinator.animate(alongsideTransition: {(context)in
-//            self.collectionView.collectionViewLayout.invalidateLayout()
-//        }, completion: nil)
-//    }
-    
     func addPhotos() {
         for photo in photos {
             let photoToSave = PhotoData(context: dataController.viewContext)
@@ -158,21 +147,6 @@ class CollectionViewController: UIViewController {
         alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alertVC, animated: true, completion: nil)
     }
-    
-//    func updateFlowLayout(_ withSize: CGSize) {
-//
-//        let landscape = withSize.width > withSize.height
-//
-//        let space: CGFloat = landscape ? 5 : 3
-//        let items: CGFloat = landscape ? 2 : 3
-//
-//        let dimension = (withSize.width - ((items + 1) * space)) / items
-//
-//        flowLayout?.minimumInteritemSpacing = space
-//        flowLayout?.minimumLineSpacing = space
-//        flowLayout?.itemSize = CGSize(width: dimension, height: dimension)
-//        flowLayout?.sectionInset = UIEdgeInsets(top: space, left: space, bottom: space, right: space)
-//    }
 }
 
 extension CollectionViewController: MKMapViewDelegate {
@@ -242,28 +216,27 @@ extension CollectionViewController: NSFetchedResultsControllerDelegate {
     //        tableView.endUpdates()
         }
         
-        func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-            switch type {
-            case .insert:
-    //            tableView.insertRows(at: [newIndexPath!], with: .fade)
-                print("todo insert")
-            case .delete:
-    //            tableView.deleteRows(at: [indexPath!], with: .fade)
-                print("todo delete")
-            case .update:
-    //            tableView.reloadRows(at: [indexPath!], with: .fade)
-                print("todo update")
-            default:
-                break
-            }
-        }
+//        func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+//            switch type {
+//            case .insert:
+//    //            tableView.insertRows(at: [newIndexPath!], with: .fade)
+//                print("todo insert")
+//            case .delete:
+//    //            tableView.deleteRows(at: [indexPath!], with: .fade)
+//                print("todo delete")
+//            case .update:
+//    //            tableView.reloadRows(at: [indexPath!], with: .fade)
+//                print("todo update")
+//            default:
+//                break
+//            }
+//        }
 
 }
 extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding = sectionInsets.left * (itemsPerRow + 1)
         let cellWidth = (view.frame.width - padding) / itemsPerRow
-        print("width: \(cellWidth)")
         return CGSize(width: cellWidth, height: cellWidth)
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
