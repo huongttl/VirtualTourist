@@ -17,7 +17,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     
     var dataController : DataController!
     var fetchedResultsController : NSFetchedResultsController<PinData>!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -59,14 +59,16 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setUpPins() {
+        var annotiations = [MKPointAnnotation]()
         if let pins = fetchedResultsController.fetchedObjects {
-            for pin in pins {
+            for pin in pins as [PinData] {
                 let annotation = MKPointAnnotation()
                 annotation.coordinate.latitude = pin.lat
                 annotation.coordinate.longitude = pin.lon
-                mapView.addAnnotation(annotation)
+//                mapView.addAnnotation(annotation)
+                annotiations.append(annotation)
             }
-            
+            mapView.addAnnotations(annotiations)
         }
         
     }
@@ -117,17 +119,24 @@ extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print("pin selected")
-        print("\(view.annotation?.coordinate.latitude); \(view.annotation?.coordinate.longitude)")
+//        print("\(view.annotation?.coordinate.latitude); \(view.annotation?.coordinate.longitude)")
         let collectionVC = storyboard?.instantiateViewController(identifier: "CollectionViewController") as! CollectionViewController
         collectionVC.pinAnnotation = view.annotation
+        collectionVC.dataController = dataController
+        let pin = PinData(context: dataController.viewContext)
+        pin.lat = (view.annotation?.coordinate.latitude)!
+        pin.lon = (view.annotation?.coordinate.longitude)!
+        collectionVC.pin = pin
+//        collectionVC.pin = view.annotation
+//        fetchedResultsController.indexPath(forObject: view)
         navigationController?.pushViewController(collectionVC, animated: true)
     }
     
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         centerPos = mapView.centerCoordinate
         zoomRange = mapView.region.span
-        print("centerPos: \(centerPos)")
-        print("rangeZoom: \(zoomRange)")
+//        print("centerPos: \(centerPos)")
+//        print("rangeZoom: \(zoomRange)")
         
     }
 }
@@ -141,19 +150,19 @@ extension MapViewController: NSFetchedResultsControllerDelegate {
 //        tableView.endUpdates()
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-//            tableView.insertRows(at: [newIndexPath!], with: .fade)
-            print("todo")
-        case .delete:
-//            tableView.deleteRows(at: [indexPath!], with: .fade)
-            print("todo")
-        case .update:
-//            tableView.reloadRows(at: [indexPath!], with: .fade)
-            print("todo")
-        default:
-            break
-        }
-    }
+//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+//        switch type {
+//        case .insert:
+////            tableView.insertRows(at: [newIndexPath!], with: .fade)
+//            print("todo")
+//        case .delete:
+////            tableView.deleteRows(at: [indexPath!], with: .fade)
+//            print("todo")
+//        case .update:
+////            tableView.reloadRows(at: [indexPath!], with: .fade)
+//            print("todo")
+//        default:
+//            break
+//        }
+//    }
 }

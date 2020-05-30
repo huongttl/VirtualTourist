@@ -2,15 +2,15 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="18G87" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="PhotoData" representedClassName="PhotoData" syncable="YES" codeGenerationType="class">
         <attribute name="image" optional="YES" attributeType="Binary"/>
-        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PinData" inverseName="pin" inverseEntity="PinData"/>
+        <relationship name="pin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PinData" inverseName="photos" inverseEntity="PinData"/>
     </entity>
     <entity name="PinData" representedClassName="PinData" syncable="YES" codeGenerationType="class">
         <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="lon" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="pin" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PhotoData" inverseName="photos" inverseEntity="PhotoData"/>
+        <relationship name="photos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PhotoData" inverseName="pin" inverseEntity="PhotoData"/>
     </entity>
     <elements>
-        <element name="PinData" positionX="-54" positionY="-9" width="128" height="88"/>
         <element name="PhotoData" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="PinData" positionX="-54" positionY="-9" width="128" height="88"/>
     </elements>
 </model>
