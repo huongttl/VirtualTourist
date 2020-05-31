@@ -24,6 +24,8 @@ class CollectionViewController: UIViewController {
     var photos: [PhotoData] = [PhotoData]()
     var isPhotoStored = false
     
+    var photoCount = 0
+    
     let sectionInsets = UIEdgeInsets(top: 5.0, left: 20.0, bottom: 5.0, right: 20.0)
     let itemsPerRow: CGFloat = 3.0
     
@@ -41,8 +43,10 @@ class CollectionViewController: UIViewController {
         setUpFetchedResultsController()
         print("setup isPhotoStored: \(isPhotoStored)")
         if isPhotoStored == false {
+            setUpNewCollectionButton(isEnable: true)
             generatePhotos()
         } else {
+            setUpNewCollectionButton(isEnable: false)
             setUpPhotos()
         }
         
@@ -64,21 +68,28 @@ class CollectionViewController: UIViewController {
         collectionView.reloadData()
     }
     
-    func addPhotos() {
-        for photo in photos {
-            let photoToSave = PhotoData(context: dataController.viewContext)
-            photoToSave.pin = pin
-            photoToSave.image = photo.image
-            try? dataController.viewContext.save()
-        }
+    func savePhotos() {
+//        for photo in photos {
+//            let photoToSave = PhotoData(context: dataController.viewContext)
+//            photoToSave.pin = pin
+//            photoToSave.image = photo.image
+//            try? dataController.viewContext.save()
+//        }
+//        if isPhotoStored == false {
+//            for photo in collectionView.indexPathsForVisibleItems {
+//                let photoToSave = PhotoData(context: dataController.viewContext)
+//                photoToSave.pin = pin
+//                photoToSave.image = collectionView.cell
+//            }
+//        }
     }
     
-    func addPhoto(photo: Data) {
-        let photoToSave = PhotoData(context: dataController.viewContext)
-        photoToSave.pin = pin
-        photoToSave.image = photo
-        try? dataController.viewContext.save()
-    }
+//    func addPhoto(photo: Data) {
+//        let photoToSave = PhotoData(context: dataController.viewContext)
+//        photoToSave.pin = pin
+//        photoToSave.image = photo
+//        try? dataController.viewContext.save()
+//    }
     
     func generatePhotos() {
         _ = FlickrClient.getPhotoURLs(lat: pinAnnotation.coordinate.latitude, lon: pinAnnotation.coordinate.longitude) {
@@ -119,6 +130,7 @@ class CollectionViewController: UIViewController {
                     isPhotoStored = true
                     photos = data
                     print("isPhotoStored: \(isPhotoStored)")
+                    photoCount = data.count
                 }
                 
             }
@@ -138,7 +150,16 @@ class CollectionViewController: UIViewController {
     }
     
     @IBAction func newCollectionButtonTapped(_ sender: Any) {
+        if let result = fetchedResultsController.fetchedObjects {
+            for photo in result {
+                dataController.viewContext.delete(photo)
+            }
+        }
         generatePhotos()
+    }
+    
+    func setUpNewCollectionButton(isEnable: Bool) {
+        newCollectionButton.isEnabled = isEnable
     }
     
     func showLoadFailure(message: String) {
@@ -169,7 +190,12 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("Collection item num: \(DataModel.photos.count)")
-        return DataModel.photos.count
+        if isPhotoStored {
+            return fetchedResultsController.fetchedObjects!.count
+        } else {
+            return DataModel.photos.count
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -193,12 +219,13 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
                 let image = UIImage(data: data)
                 cell.imageView.image = image
 //                let p = PhotoData(entity: data, insertInto: dataController.viewContext)
-//                let p = PhotoData(context: self.dataController.viewContext)
-//                p.image = data
-//                p.addToPhotos(self.pin)
-//                try? self.dataController.viewContext.save()
-                self.addPhoto(photo: data)
-                self.isPhotoStored = true
+                let p = PhotoData(context: self.dataController.viewContext)
+                p.image = data
+                p.pin = self.pin
+//                p.addToPhotos(sel。f.pin)
+                try? self.dataController.viewContext.save()
+//                self.addPhoto(photo: data)
+//                self.isPhotoStored = true
             }
 //        }
         return cell
@@ -246,6 +273,6 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
         return sectionInsets.left
     }
 //    func collectionView
-    
+//    func collec
 }
 
