@@ -57,6 +57,7 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         pin.lat = lat
         pin.lon = lon
         try? self.dataController.viewContext.save()
+        setUpFetchedResultsController()
     }
     
     func setUpPins() {
