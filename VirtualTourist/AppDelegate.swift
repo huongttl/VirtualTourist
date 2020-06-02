@@ -20,15 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        // data controller
-//        dataController.load()
-//        window?.makeKeyAndVisible()
-//        if (window?.rootViewController == nil) {
-//            print("oh ghost it's nil")
-//        }
-//        let navigationController = window?.rootViewController as! UINavigationController
-//        let mapViewController = navigationController.topViewController as! MapViewController
-//        mapViewController.dataController = dataController
         return true
     }
 

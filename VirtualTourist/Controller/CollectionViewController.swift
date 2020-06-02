@@ -17,7 +17,6 @@ class CollectionViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
-    var pinAnnotation: MKAnnotation!
     var pin: PinData!
     var dataController: DataController!
     var fetchedResultsController: NSFetchedResultsController<PhotoData>!
@@ -34,12 +33,18 @@ class CollectionViewController: UIViewController {
         
         // Do any additional setup after loading the view.
         mapView.delegate = self
-        mapView.addAnnotation(pinAnnotation)
-        let centerLocation = CLLocationCoordinate2D(latitude: pinAnnotation.coordinate.latitude, longitude: pinAnnotation.coordinate.longitude)
+        
+        let centerLocation = CLLocationCoordinate2D(latitude: pin.lat, longitude: pin.lon)
         mapView.setCenter(centerLocation, animated: true)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate.latitude = pin.lat
+        annotation.coordinate.longitude = pin.lon
+        mapView.addAnnotation(annotation)
         
         collectionView.delegate = self
-        
+        print("pin")
+        print(pin.lat)
+        print(pin.lon)
         setUpFetchedResultsController()
         print("setup isPhotoStored: \(isPhotoStored)")
         if isPhotoStored == false {
@@ -47,106 +52,54 @@ class CollectionViewController: UIViewController {
             generatePhotos()
         } else {
             setUpNewCollectionButton(isEnable: false)
-            setUpPhotos()
         }
-        
-//        if fetchedResultsController.fetchedObjects == nil || fetchedResultsController.fetchedObjects?.count == 0 {
-//            print("fet NIl")
-//            isPhotoStored = false
-//            generatePhotos()
-
-//        } else {
-//            isPhotoStored = true
-//            print("set up PHOTOS")
-////            setUpPhotos()
-//        }
-//        updateFlowLayout(view.frame.size)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
     }
-    
-    func savePhotos() {
-//        for photo in photos {
-//            let photoToSave = PhotoData(context: dataController.viewContext)
-//            photoToSave.pin = pin
-//            photoToSave.image = photo.image
-//            try? dataController.viewContext.save()
-//        }
-//        if isPhotoStored == false {
-//            for photo in collectionView.indexPathsForVisibleItems {
-//                let photoToSave = PhotoData(context: dataController.viewContext)
-//                photoToSave.pin = pin
-//                photoToSave.image = collectionView.cell
-//            }
-//        }
-    }
-    
-//    func addPhoto(photo: Data) {
-//        let photoToSave = PhotoData(context: dataController.viewContext)
-//        photoToSave.pin = pin
-//        photoToSave.image = photo
-//        try? dataController.viewContext.save()
-//    }
-    
+
     func generatePhotos() {
-        _ = FlickrClient.getPhotoURLs(lat: pinAnnotation.coordinate.latitude, lon: pinAnnotation.coordinate.longitude) {
+        _ = FlickrClient.getPhotoURLs(lat: pin.lat, lon: pin.lon) {
             (response, error) in
             if error != nil {
                 self.showLoadFailure(message: error?.localizedDescription ?? "")
             } else {
                 DataModel.photos = (response?.photos.photo)!
                 print("count photo \(DataModel.photos.count)")
-//                self.collectionView.reloadData()
                 self.collectionView.reloadData()
                 self.collectionView.reloadInputViews()
-                
             }
-            
         }
     }
     
     func setUpFetchedResultsController() {
         let fetchRequest: NSFetchRequest<PhotoData> = PhotoData.fetchRequest()
-//        let sortDesriptor = NSSortDescriptor(key: "creationDate", ascending: false)
         fetchRequest.sortDescriptors = []
-        let predicate = NSPredicate(format: "pin == %@", pin!)
+        let predicate = NSPredicate(format: "pin == %@", pin)
         fetchRequest.predicate = predicate
         fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self
         do {
             try fetchedResultsController.performFetch()
-//            print("fetchedResultsController.fetchedObjects?.count: \(fetchedResultsController.fetchedObjects?.count)")
-            if let data = fetchedResultsController.fetchedObjects {
-                if data.count == 0 {
-                    isPhotoStored = false
-                    print("isPhotoStored: \(isPhotoStored)")
-                    print("data count: \(data.count)")
-//                    photos = data
-                } else {
-                    print("data count: \(data.count)")
-                    isPhotoStored = true
-                    photos = data
-                    print("isPhotoStored: \(isPhotoStored)")
-                    photoCount = data.count
-                }
-                
-            }
         } catch {
             fatalError("The fetch could not be performed: \(error.localizedDescription)")
-//            generatePhotos()
         }
-    }
-    
-    func setUpPhotos() {
-//        if let data = fetchedResultsController.fetchedObjects, data.count > 0 {
-//            photos = data
-//            print("photo num: \(data.count)")
-//            self.collectionView.reloadData()
-//        }
-        print("setUpPhoto should be running")
+        if let data = fetchedResultsController.fetchedObjects {
+            if data.count == 0 {
+                                isPhotoStored = false
+                                print("isPhotoStored: \(isPhotoStored)")
+                                print("data count: \(data.count)")
+                            } else {
+                                print("data count: \(data.count)")
+                                isPhotoStored = true
+                                photos = data
+                                print("isPhotoStored: \(isPhotoStored)")
+                                photoCount = data.count
+                            }
+        }
+        
     }
     
     @IBAction func newCollectionButtonTapped(_ sender: Any) {
@@ -178,7 +131,6 @@ extension CollectionViewController: MKMapViewDelegate {
         pinView.canShowCallout = true
         pinView.annotation = annotation
         pinView.rightCalloutAccessoryView = UIButton(type: .infoLight)
-//        print("latitude: \(annotation.coordinate.latitude), longitude: \(annotation.coordinate.longitude)")
         return pinView
     }
 }
@@ -191,8 +143,10 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         print("Collection item num: \(DataModel.photos.count)")
         if isPhotoStored {
+            print("collectionView num: \(fetchedResultsController.fetchedObjects!.count)")
             return fetchedResultsController.fetchedObjects!.count
         } else {
+            print("print model num: \(DataModel.photos.count)")
             return DataModel.photos.count
         }
         
@@ -200,16 +154,12 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
-//        if let fetchResult = fetchedResultsController.fetchedObjects, fetchResult.count > 0 {
-//            // Load photos from CoreDate if any
-//            let photo = fetchedResultsController.object(at: indexPath)
-//            if let data = photo.image {
-//                cell.imageView.image = UIImage(data: data)
-////                let p = data as? PhotoData
-//
-//            }
-//        } else {
-            // Call Flickr API if there's no saved photos
+        if isPhotoStored {
+            let photo = fetchedResultsController.object(at: indexPath)
+            if let data = photo.image {
+                cell.imageView.image = UIImage(data: data)
+            }
+        } else {
             let photo = DataModel.photos[indexPath.row]
             FlickrClient.downloadPhoto(farmId: photo.farm, serverId: photo.server, id: photo.id, secret: photo.secret) {
                 data, error in
@@ -218,20 +168,14 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
                 }
                 let image = UIImage(data: data)
                 cell.imageView.image = image
-//                let p = PhotoData(entity: data, insertInto: dataController.viewContext)
                 let p = PhotoData(context: self.dataController.viewContext)
                 p.image = data
                 p.pin = self.pin
-//                p.addToPhotos(sel。f.pin)
                 try? self.dataController.viewContext.save()
-//                self.addPhoto(photo: data)
-//                self.isPhotoStored = true
             }
-//        }
+        }
         return cell
     }
-    
-    // Todo
 }
 
 extension CollectionViewController: NSFetchedResultsControllerDelegate {
