@@ -78,6 +78,12 @@ class CollectionViewController: UIViewController {
         }
     }
     
+    func deletePhoto(index: NSIndexPath) {
+        let photoToDelete = fetchedResultsController.object(at: index as IndexPath)
+        dataController.viewContext.delete(photoToDelete)
+        try? dataController.viewContext.save()
+    }
+    
     func setUpFetchedResultsController() {
         let fetchRequest: NSFetchRequest<PhotoData> = PhotoData.fetchRequest()
         fetchRequest.sortDescriptors = []
@@ -182,6 +188,12 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
         }
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deleteItems(at: [indexPath])
+        deletePhoto(index: indexPath as NSIndexPath)
+        collectionView.reloadData()
+    }
 }
 
 extension CollectionViewController: NSFetchedResultsControllerDelegate {
@@ -224,5 +236,6 @@ extension CollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 //    func collectionView
 //    func collec
+
 }
 
