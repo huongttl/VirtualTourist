@@ -68,6 +68,10 @@ class CollectionViewController: UIViewController {
             } else {
                 DataModel.photos = (response?.photos.photo)!
                 print("count photo \(DataModel.photos.count)")
+                if DataModel.photos.count == 0 {
+                    self.showLoadFailure(message: "There's no photo taken. Try again!")
+                    return
+                }
                 self.collectionView.reloadData()
                 self.collectionView.reloadInputViews()
             }
@@ -116,7 +120,7 @@ class CollectionViewController: UIViewController {
     }
     
     func showLoadFailure(message: String) {
-        let alertVC = UIAlertController(title: "Load Student Location Failed", message: message, preferredStyle: .alert)
+        let alertVC = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         print(message)
         alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alertVC, animated: true, completion: nil)
@@ -154,6 +158,8 @@ extension CollectionViewController: UICollectionViewDelegate, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
+        cell.imageView.image = UIImage(named: "AppIcon")
+//        cell.imageView.
         if isPhotoStored {
             let photo = fetchedResultsController.object(at: indexPath)
             if let data = photo.image {
