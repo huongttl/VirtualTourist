@@ -30,10 +30,6 @@ class FlickrClient {
         }
     }
     
-//    func getImageURL(farmId: String, serverId: String, id: String, secret: String) -> URL {
-//        return URL(string: "https://farm\(farmId).staticflickr.com/\(serverId)/\(id)_\(secret).jpg")!
-//    }
-    
     @discardableResult class func taskForGETRequest<ResponseType: Codable>(url: URL, response: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void ) -> URLSessionTask {
         let task = URLSession.shared.dataTask(with: url) {
             data, response, error in
@@ -48,16 +44,9 @@ class FlickrClient {
                     completion(responseObject, nil)
                 }
             } catch {
-//                do {
-//                    let errorResponse = try decoder.decode(TMDBResopnse.self, from: data)
-//                    DispatchQueue.main.async {
-//                        completion(nil, errorResponse)
-//                    }
-//                } catch {
-                    DispatchQueue.main.async {
-                        completion(nil, error)
-                    }
-//                }
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
             }
         }
         task.resume()

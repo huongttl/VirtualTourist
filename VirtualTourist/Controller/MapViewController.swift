@@ -49,7 +49,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             mapView.addAnnotation(annotation)
-            print("after saving pin: \(fetchedResultsController.fetchedObjects?.count)")
         }
     }
     
@@ -58,7 +57,6 @@ class MapViewController: UIViewController, UIGestureRecognizerDelegate {
         pin.lat = lat
         pin.lon = lon
         try? self.dataController.viewContext.save()
-        print("after saving pin: \(fetchedResultsController.fetchedObjects?.count)")
     }
     
     func setUpPins() {
@@ -112,32 +110,19 @@ extension MapViewController: MKMapViewDelegate {
         pinView.canShowCallout = true
         pinView.annotation = annotation
         pinView.rightCalloutAccessoryView = UIButton(type: .infoLight)
-        print("latitude: \(annotation.coordinate.latitude), longitude: \(annotation.coordinate.longitude)")
         return pinView
     }
     
     
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("pin selected")
-//        print("\(view.annotation?.coordinate.latitude); \(view.annotation?.coordinate.longitude)")
         let collectionVC = storyboard?.instantiateViewController(identifier: "CollectionViewController") as! CollectionViewController
-//        collectionVC.pinAnnotation = view.annotation
         collectionVC.dataController = dataController
-//        let pin = PinData(context: dataController.viewContext)
-//        pin.lat = (view.annotation?.coordinate.latitude)!
-//        pin.lon = (view.annotation?.coordinate.longitude)!
-//        print("selected index: \(fetchedResultsController.indexPath(forObject: pin))")
-//        fetchedResultsController.o
-//        try? dataController.viewContext.save()
         if let pin = searchPinData(lat: (view.annotation?.coordinate.latitude)!, lon: (view.annotation?.coordinate.longitude)!) {
             collectionVC.pin = pin
         } else {
             print("Cannot access pin")
         }
-        
-//        collectionVC.pin = view.annotation
-//        fetchedResultsController.indexPath(forObject: view)
         mapView.deselectAnnotation(view.annotation, animated: true)
         navigationController?.pushViewController(collectionVC, animated: true)
     }
@@ -154,8 +139,6 @@ extension MapViewController: MKMapViewDelegate {
                 }
             }
         }
-        print("fetch count")
-        print(fetchedResultsController.fetchedObjects?.count)
         return nil
     }
     
@@ -166,27 +149,5 @@ extension MapViewController: MKMapViewDelegate {
 }
 
 extension MapViewController: NSFetchedResultsControllerDelegate {
-//    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-////        tableView.beginUpdates()
-//    }
-//
-//    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-////        tableView.endUpdates()
-//    }
-    
-//    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-//        switch type {
-//        case .insert:
-////            tableView.insertRows(at: [newIndexPath!], with: .fade)
-//            print("todo")
-//        case .delete:
-////            tableView.deleteRows(at: [indexPath!], with: .fade)
-//            print("todo")
-//        case .update:
-////            tableView.reloadRows(at: [indexPath!], with: .fade)
-//            print("todo")
-//        default:
-//            break
-//        }
-//    }
+
 }
